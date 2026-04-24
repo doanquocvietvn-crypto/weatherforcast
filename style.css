@@ -1,0 +1,146 @@
+:root {
+    --bg-color: #0b131e;
+    --widget-bg: #202b3b;
+    --text-main: #ffffff;
+    --text-muted: #9399a2;
+    --accent-color: #00a8ff;
+    --border-radius: 16px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    padding: 20px;
+}
+
+.dashboard-container {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+    height: 95vh;
+}
+
+.widget {
+    background-color: var(--widget-bg);
+    border-radius: var(--border-radius);
+    padding: 20px;
+}
+
+/* Sidebar & Controls */
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.search-box {
+    background-color: var(--widget-bg);
+    padding: 10px 15px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-box input {
+    background: none;
+    border: none;
+    color: var(--text-main);
+    width: 100%;
+    outline: none;
+}
+
+.source-selector {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--widget-bg);
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-size: 0.9em;
+}
+
+.source-selector select {
+    background: var(--bg-color);
+    color: var(--text-main);
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+    outline: none;
+}
+
+.current-weather h1 { font-size: 2.5em; }
+.current-weather h2 { font-size: 4em; margin-top: 10px; }
+.current-weather p { color: var(--text-muted); }
+
+/* Main Content */
+.main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.hourly-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+    overflow-x: auto;
+}
+
+.hour-item {
+    text-align: center;
+    min-width: 60px;
+}
+
+.hour-item i {
+    font-size: 1.5em;
+    margin: 10px 0;
+    color: #f1c40f;
+}
+
+/* Air Conditions Grid */
+.conditions-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.condition-item p {
+    color: var(--text-muted);
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.condition-item h4 {
+    font-size: 1.8em;
+    font-weight: 500;
+}
+
+/* 7 Day Forecast List */
+#weeklyForecast {
+    list-style: none;
+    margin-top: 15px;
+}
+
+#weeklyForecast li {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+#weeklyForecast li:last-child {
+    border-bottom: none;
+}
