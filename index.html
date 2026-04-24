@@ -3,102 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium Weather Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <title>Weather Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="app-container">
-        <aside class="sidebar">
-            <div class="search-wrapper">
+    <div class="dashboard-wrapper">
+        <aside class="left-sidebar">
+            <div class="search-box">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="citySearch" placeholder="Tìm kiếm khu vực...">
+                <input type="text" id="citySearch" placeholder="Tìm kiếm thành phố...">
             </div>
 
             <div class="current-weather">
                 <h1 id="cityName">Đà Nẵng</h1>
-                <p class="date-time" id="currentDate">Hôm nay, 24 Tháng 4</p>
-                <div class="temp-display">
-                    <h2 id="mainTemp">31°</h2>
-                    <i class="fa-solid fa-sun weather-icon-large"></i>
+                <p class="chance-rain">Xác suất mưa: <span id="mainRainChance">0%</span></p>
+                <div class="temp-block">
+                    <h2 id="currentTemp">31°</h2>
+                    <i class="fa-solid fa-sun weather-icon-main"></i>
                 </div>
-                <p class="condition" id="mainCondition">Trời nắng, ít mây</p>
             </div>
 
-            <div class="sidebar-widget">
-                <h3>Tùy chỉnh Nguồn</h3>
-                <select id="apiSourceSelect" class="custom-select">
-                    <option value="accuweather">AccuWeather (Khuyên dùng)</option>
-                    <option value="openweather">OpenWeatherMap</option>
-                    <option value="weatherapi">WeatherAPI</option>
-                </select>
+            <div class="hourly-forecast widget">
+                <div class="widget-header">
+                    <h3>Dự báo hôm nay</h3>
+                </div>
+                <div class="hourly-list" id="hourlyContainer">
+                    </div>
             </div>
         </aside>
 
         <main class="main-content">
-            <nav class="top-nav">
+            <nav class="top-navigation">
                 <a href="#" class="active">Hôm nay</a>
                 <a href="#">Ngày mai</a>
-                <a href="#">7 Ngày tới</a>
+                <a href="#">7 ngày tới</a>
             </nav>
 
-            <section class="chart-section widget">
+            <section class="air-conditions widget">
                 <div class="widget-header">
-                    <h3>Biểu đồ Nhiệt độ & Lượng mưa</h3>
+                    <h3>Chỉ số không khí</h3>
+                    <button class="btn-more">Xem thêm</button>
                 </div>
-                <div class="chart-container">
-                    <canvas id="weatherChart"></canvas>
+                <div class="conditions-grid">
+                    <div class="condition-item">
+                        <div class="condition-label">
+                            <i class="fa-solid fa-temperature-half"></i> Cảm giác thực
+                        </div>
+                        <h4 id="realFeel">30°</h4>
+                    </div>
+                    <div class="condition-item">
+                        <div class="condition-label">
+                            <i class="fa-solid fa-wind"></i> Tốc độ gió
+                        </div>
+                        <h4 id="windSpeed">0.2 km/h</h4>
+                    </div>
+                    <div class="condition-item">
+                        <div class="condition-label">
+                            <i class="fa-solid fa-droplet"></i> Xác suất mưa
+                        </div>
+                        <h4 id="rainChance">0%</h4>
+                    </div>
+                    <div class="condition-item">
+                        <div class="condition-label">
+                            <i class="fa-solid fa-sun"></i> Chỉ số UV
+                        </div>
+                        <h4 id="uvIndex">3</h4>
+                    </div>
                 </div>
             </section>
 
-            <section class="conditions-section">
-                <div class="widget condition-card">
-                    <div class="card-header">
-                        <i class="fa-solid fa-temperature-half"></i>
-                        <span>Cảm giác thực</span>
-                    </div>
-                    <div class="card-body">
-                        <h3 id="realFeel">34°</h3>
-                        <p class="status-text safe">Tương đối nóng</p>
-                    </div>
+            <section class="weekly-forecast widget">
+                <div class="widget-header">
+                    <h3>Dự báo 7 ngày</h3>
                 </div>
-
-                <div class="widget condition-card">
-                    <div class="card-header">
-                        <i class="fa-solid fa-wind"></i>
-                        <span>Tốc độ gió</span>
-                    </div>
-                    <div class="card-body">
-                        <h3 id="windSpeed">12 km/h</h3>
-                        <p class="status-text">Gió nhẹ</p>
-                    </div>
-                </div>
-
-                <div class="widget condition-card">
-                    <div class="card-header">
-                        <i class="fa-solid fa-droplet"></i>
-                        <span>Độ ẩm</span>
-                    </div>
-                    <div class="card-body">
-                        <h3 id="humidity">72%</h3>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 72%;"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="widget condition-card">
-                    <div class="card-header">
-                        <i class="fa-solid fa-sun"></i>
-                        <span>Chỉ số UV</span>
-                    </div>
-                    <div class="card-body">
-                        <h3 id="uvIndex">8</h3>
-                        <p class="status-text warning">Rất cao</p>
-                    </div>
-                </div>
+                <ul class="forecast-list" id="weeklyContainer">
+                    </ul>
             </section>
         </main>
     </div>
