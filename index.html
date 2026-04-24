@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="user-controls">
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="cityInput" placeholder="Tìm kiếm thành phố...">
+                </div>
+                <div class="source-selector">
+                    <label for="apiSource">Nguồn dự báo:</label>
+                    <select id="apiSource">
+                        <option value="openweather">OpenWeatherMap</option>
+                        <option value="accuweather">AccuWeather</option>
+                        <option value="weatherapi">WeatherAPI</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="current-weather">
+                <h1 id="cityName">Đà Nẵng</h1>
+                <p id="chanceOfRain">Xác suất mưa: 0%</p>
+                <h2 id="currentTemp">31°</h2>
+            </div>
+            
+            <div class="forecast-7day widget">
+                <h3>Dự báo 7 ngày</h3>
+                <ul id="weeklyForecast">
+                    </ul>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <section class="hourly-forecast widget">
+                <h3>Dự báo hôm nay</h3>
+                <div class="hourly-container" id="hourlyForecast">
+                    </div>
+            </section>
+
+            <section class="air-conditions widget">
+                <h3>Chỉ số môi trường</h3>
+                <div class="conditions-grid">
+                    <div class="condition-item">
+                        <p><i class="fa-solid fa-temperature-half"></i> Cảm giác thực</p>
+                        <h4 id="realFeel">34°</h4>
+                    </div>
+                    <div class="condition-item">
+                        <p><i class="fa-solid fa-wind"></i> Gió</p>
+                        <h4 id="windSpeed">0.2 km/h</h4>
+                    </div>
+                    <div class="condition-item">
+                        <p><i class="fa-solid fa-droplet"></i> Độ ẩm</p>
+                        <h4 id="humidity">72%</h4>
+                    </div>
+                    <div class="condition-item">
+                        <p><i class="fa-solid fa-sun"></i> Chỉ số UV</p>
+                        <h4 id="uvIndex">8 (Rất cao)</h4>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
