@@ -1,146 +1,199 @@
 :root {
-    --bg-color: #0b131e;
-    --widget-bg: #202b3b;
-    --text-main: #ffffff;
-    --text-muted: #9399a2;
-    --accent-color: #00a8ff;
-    --border-radius: 16px;
+    --bg-app: #060D17;
+    --bg-panel: #111A28;
+    --bg-hover: #1A2639;
+    --text-primary: #FFFFFF;
+    --text-secondary: #8B95A5;
+    --accent-blue: #007BFF;
+    --accent-cyan: #00E5FF;
+    --warning: #FF4757;
+    --safe: #2ED573;
+    --radius-lg: 24px;
+    --radius-md: 16px;
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Nunito', sans-serif;
 }
 
 body {
-    background-color: var(--bg-color);
-    color: var(--text-main);
+    background-color: var(--bg-app);
+    color: var(--text-primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
     padding: 20px;
 }
 
-.dashboard-container {
+.app-container {
+    width: 100%;
+    max-width: 1200px;
+    background-color: var(--bg-app);
     display: grid;
-    grid-template-columns: 350px 1fr;
-    gap: 20px;
-    max-width: 1400px;
-    margin: 0 auto;
-    height: 95vh;
+    grid-template-columns: 320px 1fr;
+    gap: 30px;
 }
 
 .widget {
-    background-color: var(--widget-bg);
-    border-radius: var(--border-radius);
-    padding: 20px;
+    background-color: var(--bg-panel);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
 
-/* Sidebar & Controls */
+/* Sidebar */
 .sidebar {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 24px;
 }
 
-.search-box {
-    background-color: var(--widget-bg);
-    padding: 10px 15px;
-    border-radius: 10px;
+.search-wrapper {
     display: flex;
     align-items: center;
-    gap: 10px;
+    background-color: var(--bg-panel);
+    padding: 14px 20px;
+    border-radius: var(--radius-md);
+    gap: 12px;
 }
 
-.search-box input {
-    background: none;
+.search-wrapper input {
+    background: transparent;
     border: none;
-    color: var(--text-main);
+    color: var(--text-primary);
     width: 100%;
+    font-size: 1rem;
     outline: none;
 }
 
-.source-selector {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: var(--widget-bg);
-    padding: 10px 15px;
-    border-radius: 10px;
-    font-size: 0.9em;
+.search-wrapper input::placeholder {
+    color: var(--text-secondary);
 }
 
-.source-selector select {
-    background: var(--bg-color);
-    color: var(--text-main);
-    border: none;
-    padding: 5px;
-    border-radius: 5px;
+.current-weather {
+    background: linear-gradient(145deg, #111A28 0%, #0D141F 100%);
+    padding: 30px;
+    border-radius: var(--radius-lg);
+}
+
+.current-weather h1 { font-size: 2.2rem; margin-bottom: 5px; }
+.date-time { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 20px; }
+.temp-display { display: flex; align-items: center; gap: 15px; }
+.temp-display h2 { font-size: 4.5rem; font-weight: 800; }
+.weather-icon-large { font-size: 3.5rem; color: #FFD32A; }
+.condition { margin-top: 15px; font-size: 1.1rem; font-weight: 600; }
+
+.custom-select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    background-color: var(--bg-hover);
+    color: var(--text-primary);
+    border: 1px solid rgba(255,255,255,0.1);
+    margin-top: 10px;
     outline: none;
 }
-
-.current-weather h1 { font-size: 2.5em; }
-.current-weather h2 { font-size: 4em; margin-top: 10px; }
-.current-weather p { color: var(--text-muted); }
 
 /* Main Content */
 .main-content {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 25px;
 }
 
-.hourly-container {
+.top-nav {
     display: flex;
-    justify-content: space-between;
-    margin-top: 15px;
-    overflow-x: auto;
+    gap: 30px;
+    border-bottom: 2px solid var(--bg-panel);
+    padding-bottom: 10px;
 }
 
-.hour-item {
-    text-align: center;
-    min-width: 60px;
+.top-nav a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding-bottom: 10px;
+    position: relative;
+    transition: 0.3s;
 }
 
-.hour-item i {
-    font-size: 1.5em;
-    margin: 10px 0;
-    color: #f1c40f;
+.top-nav a.active, .top-nav a:hover {
+    color: var(--text-primary);
 }
 
-/* Air Conditions Grid */
-.conditions-grid {
+.top-nav a.active::after {
+    content: '';
+    position: absolute;
+    bottom: -12px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: var(--accent-blue);
+    border-radius: 5px;
+}
+
+.chart-section {
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-container {
+    flex-grow: 1;
+    position: relative;
+    width: 100%;
+}
+
+.conditions-section {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 20px;
-    margin-top: 15px;
 }
 
-.condition-item p {
-    color: var(--text-muted);
-    margin-bottom: 5px;
+.condition-card {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.card-header {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
+    color: var(--text-secondary);
+    font-weight: 600;
 }
 
-.condition-item h4 {
-    font-size: 1.8em;
-    font-weight: 500;
+.card-body h3 {
+    font-size: 2rem;
+    margin-bottom: 5px;
 }
 
-/* 7 Day Forecast List */
-#weeklyForecast {
-    list-style: none;
-    margin-top: 15px;
+.status-text { font-size: 0.9rem; font-weight: 600; }
+.status-text.warning { color: var(--warning); }
+.status-text.safe { color: var(--safe); }
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background-color: var(--bg-hover);
+    border-radius: 10px;
+    margin-top: 10px;
+    overflow: hidden;
 }
 
-#weeklyForecast li {
-    display: flex;
-    justify-content: space-between;
-    padding: 15px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));
+    border-radius: 10px;
 }
 
-#weeklyForecast li:last-child {
-    border-bottom: none;
-}
+/* Scrollbar tinh chỉnh cho MacOS */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-app); }
+::-webkit-scrollbar-thumb { background: var(--bg-hover); border-radius: 10px; }
