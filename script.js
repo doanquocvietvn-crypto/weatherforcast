@@ -1,113 +1,48 @@
-document.addEventListener("DOMContentLoaded", function() {
-    
-    // Cấu hình Biểu đồ Line (Phân tích lượng khách)
-    const trafficCtx = document.getElementById('trafficChart').getContext('2d');
-    
-    // Tạo màu Gradient cho vùng dưới đường Line
-    let gradientFill = trafficCtx.createLinearGradient(0, 0, 0, 300);
-    gradientFill.addColorStop(0, 'rgba(67, 97, 238, 0.2)'); // Màu primary nhạt
-    gradientFill.addColorStop(1, 'rgba(67, 97, 238, 0)');
+const API_KEY = "YOUR_API_KEY";
+const city = "Da Nang";
 
-    new Chart(trafficCtx, {
-        type: 'line',
-        data: {
-            labels: ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'],
-            datasets: [{
-                label: 'Lượt khách',
-                data: [12450, 11200, 13500, 14200, 16800, 22500, 24100],
-                borderColor: '#4361ee', // Primary color
-                backgroundColor: gradientFill,
-                borderWidth: 3,
-                pointBackgroundColor: '#ffffff',
-                pointBorderColor: '#4361ee',
-                pointBorderWidth: 2,
-                pointRadius: 4,
-                pointHoverRadius: 6,
-                fill: true,
-                tension: 0.4 // Tạo đường cong mềm mại
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: false // Ẩn chú thích vì chỉ có 1 data line
-                },
-                tooltip: {
-                    backgroundColor: '#1e293b',
-                    padding: 12,
-                    titleFont: { size: 13, family: 'sans-serif' },
-                    bodyFont: { size: 14, weight: 'bold', family: 'sans-serif' },
-                    displayColors: false
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    grid: {
-                        color: '#f1f5f9',
-                        drawBorder: false,
-                    },
-                    ticks: {
-                        color: '#64748b',
-                        font: { size: 12 }
-                    }
-                },
-                x: {
-                    grid: {
-                        display: false,
-                        drawBorder: false,
-                    },
-                    ticks: {
-                        color: '#64748b',
-                        font: { size: 12 }
-                    }
-                }
-            }
-        }
-    });
+async function loadWeather() {
+  const res = await fetch(
+    `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${API_KEY}`
+  );
+  const data = await res.json();
 
-    // Cấu hình Biểu đồ Doughnut (Cơ cấu hạng vé)
-    const doughnutCtx = document.getElementById('ticketDoughnutChart').getContext('2d');
-    
-    new Chart(doughnutCtx, {
-        type: 'doughnut',
-        data: {
-            labels: ['Vé Người lớn', 'Vé Trẻ em', 'Vé Combo', 'Vé Ưu tiên'],
-            datasets: [{
-                data: [45, 25, 20, 10],
-                backgroundColor: [
-                    '#4361ee', // Primary
-                    '#38bdf8', // Light Blue
-                    '#f59e0b', // Orange
-                    '#10b981'  // Teal
-                ],
-                borderWidth: 0,
-                hoverOffset: 4
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            cutout: '75%', // Tạo độ mỏng cho vòng cung
-            plugins: {
-                legend: {
-                    position: 'bottom',
-                    labels: {
-                        padding: 20,
-                        usePointStyle: true,
-                        pointStyle: 'circle',
-                        color: '#64748b',
-                        font: { size: 12, family: 'sans-serif' }
-                    }
-                },
-                tooltip: {
-                    backgroundColor: '#1e293b',
-                    padding: 10,
-                    bodyFont: { size: 13, family: 'sans-serif' }
-                }
-            }
-        }
-    });
-});
+  document.getElementById("city").innerText = data.name;
+  document.getElementById("temp").innerText = Math.round(data.main.temp) + "°C";
+  document.getElementById("desc").innerText = data.weather[0].description;
+  document.getElementById("humidity").innerText = data.main.humidity;
+  document.getElementById("wind").innerText = data.wind.speed;
+  document.getElementById("feels").innerText = data.main.feels_like;
+  document.getElementById("pressure").innerText = data.main.pressure;
+
+  document.getElementById("sunrise").innerText =
+    new Date(data.sys.sunrise * 1000).toLocaleTimeString();
+
+  document.getElementById("sunset").innerText =
+    new Date(data.sys.sunset * 1000).toLocaleTimeString();
+}
+
+async function loadForecast() {
+  const res = await fetch(
+    `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${API_KEY}`
+  );
+  const data = await res.json();
+
+  const temps = data.list.slice(0, 8).map(i => i.main.temp);
+  const labels = data.list.slice(0, 8).map(i => i.dt_txt.slice(11,16));
+
+  new Chart(document.getElementById("chart"), {
+    type: "line",
+    data: {
+      labels,
+      datasets: [{
+        label: "Temperature",
+        data: temps,
+        borderWidth: 3,
+      }]
+    }
+  });
+}
+
+loadWeather();
+loadForecast();
