@@ -1,72 +1,113 @@
-document.addEventListener('DOMContentLoaded', () => {
-    renderHourly();
-    renderWeekly();
+document.addEventListener("DOMContentLoaded", function() {
+    
+    // Cấu hình Biểu đồ Line (Phân tích lượng khách)
+    const trafficCtx = document.getElementById('trafficChart').getContext('2d');
+    
+    // Tạo màu Gradient cho vùng dưới đường Line
+    let gradientFill = trafficCtx.createLinearGradient(0, 0, 0, 300);
+    gradientFill.addColorStop(0, 'rgba(67, 97, 238, 0.2)'); // Màu primary nhạt
+    gradientFill.addColorStop(1, 'rgba(67, 97, 238, 0)');
 
-    // Xử lý tìm kiếm
-    const searchInput = document.getElementById('citySearch');
-    searchInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter' && e.target.value.trim() !== '') {
-            updateDashboardData(e.target.value);
+    new Chart(trafficCtx, {
+        type: 'line',
+        data: {
+            labels: ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'],
+            datasets: [{
+                label: 'Lượt khách',
+                data: [12450, 11200, 13500, 14200, 16800, 22500, 24100],
+                borderColor: '#4361ee', // Primary color
+                backgroundColor: gradientFill,
+                borderWidth: 3,
+                pointBackgroundColor: '#ffffff',
+                pointBorderColor: '#4361ee',
+                pointBorderWidth: 2,
+                pointRadius: 4,
+                pointHoverRadius: 6,
+                fill: true,
+                tension: 0.4 // Tạo đường cong mềm mại
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false // Ẩn chú thích vì chỉ có 1 data line
+                },
+                tooltip: {
+                    backgroundColor: '#1e293b',
+                    padding: 12,
+                    titleFont: { size: 13, family: 'sans-serif' },
+                    bodyFont: { size: 14, weight: 'bold', family: 'sans-serif' },
+                    displayColors: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: '#f1f5f9',
+                        drawBorder: false,
+                    },
+                    ticks: {
+                        color: '#64748b',
+                        font: { size: 12 }
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false,
+                        drawBorder: false,
+                    },
+                    ticks: {
+                        color: '#64748b',
+                        font: { size: 12 }
+                    }
+                }
+            }
+        }
+    });
+
+    // Cấu hình Biểu đồ Doughnut (Cơ cấu hạng vé)
+    const doughnutCtx = document.getElementById('ticketDoughnutChart').getContext('2d');
+    
+    new Chart(doughnutCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Vé Người lớn', 'Vé Trẻ em', 'Vé Combo', 'Vé Ưu tiên'],
+            datasets: [{
+                data: [45, 25, 20, 10],
+                backgroundColor: [
+                    '#4361ee', // Primary
+                    '#38bdf8', // Light Blue
+                    '#f59e0b', // Orange
+                    '#10b981'  // Teal
+                ],
+                borderWidth: 0,
+                hoverOffset: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '75%', // Tạo độ mỏng cho vòng cung
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        padding: 20,
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                        color: '#64748b',
+                        font: { size: 12, family: 'sans-serif' }
+                    }
+                },
+                tooltip: {
+                    backgroundColor: '#1e293b',
+                    padding: 10,
+                    bodyFont: { size: 13, family: 'sans-serif' }
+                }
+            }
         }
     });
 });
-
-function renderHourly() {
-    const container = document.getElementById('hourlyContainer');
-    const times = [
-        { time: '6:00 AM', temp: '25°', active: false },
-        { time: '9:00 AM', temp: '28°', active: true },
-        { time: '12:00 PM', temp: '33°', active: false },
-        { time: '3:00 PM', temp: '34°', active: false },
-        { time: '6:00 PM', temp: '32°', active: false },
-        { time: '9:00 PM', temp: '30°', active: false }
-    ];
-
-    container.innerHTML = times.map(t => `
-        <div class="hour-item ${t.active ? 'active' : ''}">
-            <p>${t.time}</p>
-            <i class="fa-solid fa-sun"></i>
-            <h4>${t.temp}</h4>
-        </div>
-    `).join('');
-}
-
-function renderWeekly() {
-    const container = document.getElementById('weeklyContainer');
-    const days = ['Hôm nay', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy', 'Chủ Nhật'];
-    const conditions = ['Nắng', 'Nắng', 'Ít mây', 'Nhiều mây', 'Nhiều mây', 'Mưa rào', 'Nắng'];
-
-    container.innerHTML = days.map((day, index) => {
-        const min = Math.floor(Math.random() * 5 + 24);
-        const max = Math.floor(Math.random() * 5 + 31);
-        const icon = conditions[index] === 'Mưa rào' ? 'fa-cloud-rain' : 'fa-sun';
-        
-        return `
-            <li class="forecast-item">
-                <span class="day-name">${day}</span>
-                <div class="weather-state">
-                    <i class="fa-solid ${icon}"></i> ${conditions[index]}
-                </div>
-                <span class="temp-range">${max} / <span>${min}</span></span>
-            </li>
-        `;
-    }).join('');
-}
-
-function updateDashboardData(city) {
-    document.getElementById('cityName').innerText = city;
-    
-    // Cập nhật ngẫu nhiên các thông số cơ bản
-    const temp = Math.floor(Math.random() * 10 + 25);
-    document.getElementById('currentTemp').innerText = temp + '°';
-    document.getElementById('realFeel').innerText = (temp + 2) + '°';
-    
-    const rain = Math.floor(Math.random() * 20);
-    document.getElementById('mainRainChance').innerText = rain + '%';
-    document.getElementById('rainChance').innerText = rain + '%';
-    
-    document.getElementById('windSpeed').innerText = (Math.random() * 10).toFixed(1) + ' km/h';
-    document.getElementById('uvIndex').innerText = Math.floor(Math.random() * 8 + 1);
-    
-    renderWeekly();
-}
