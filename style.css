@@ -1,24 +1,36 @@
-/* Tùy chỉnh thanh cuộn cho khu vực nội dung và sidebar */
-.custom-scrollbar::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 10px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8;
-}
-
-/* Đảm bảo Font hiển thị mượt mà trên Safari */
 body {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  font-family: sans-serif;
+  background: radial-gradient(circle at top, #1a2238, #0b0f1a);
+  color: white;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: 20px;
+  padding: 20px;
+}
+
+.card {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(15px);
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.main-card {
+  background: linear-gradient(135deg, #fb923c, #ea580c);
+}
+
+h1 {
+  font-size: 60px;
+  margin: 10px 0;
+}
+
+.mini-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 20px;
 }
